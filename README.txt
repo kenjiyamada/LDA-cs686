@@ -13,9 +13,9 @@ To run:
 or
     % make run-nips
 
-Running with the NY Times data for 1,000 iterations (100 topics, 4-CPUs) took 19 hours on
-a shared Amazon AWS server. The CPU info from /proc/cpuinfo says Intel Xeon CPU E5-2650 0
-@ 2.00GHz, with 4 processors.
+The data files (docword.nytimes.txt or nips.nytimes.txt) can be donwloaded from here: http://archive.ics.uci.edu/ml/datasets/Bag+of+Words
+
+Running with the NY Times data for 1,000 iterations (100 topics, 4-CPUs) took 19 hours on a shared Amazon AWS server. The CPU info from /proc/cpuinfo says Intel Xeon CPU E5-2650 0 @ 2.00GHz, with 4 processors.
 
 The training perplexity at each 100 iteration is the following:
 

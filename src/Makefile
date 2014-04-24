@@ -7,7 +7,7 @@ OBJX = uni.o multi.o corpus.o gibbs.o lda.o param.o main.o
 
 # src files
 SRCS = README.txt Makefile main.cc rand.h param.h param.cc lda.h lda.cc corpus.h corpus.cc gibbs.h gibbs.cc multi.cc uni.cc
-TGZ = lda-yamada-mar17.tgz
+TGZ = lda-yamada-apr24.tgz
 
 # output files
 OUTS = topics.txt doctopic.txt
