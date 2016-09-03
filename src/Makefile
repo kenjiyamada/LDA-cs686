@@ -1,18 +1,20 @@
 
 # main executable
-MAIN=fastLDA
+MAIN=lda-2.0
 
 # object files
-OBJX = uni.o multi.o corpus.o gibbs.o lda.o param.o main.o 
+OBJX = uni.o multi.o corpus.o gibbs.o ntst.o lda.o param.o main.o 
 
 # src files
-SRCS = README.txt Makefile main.cc rand.h param.h param.cc lda.h lda.cc corpus.h corpus.cc gibbs.h gibbs.cc multi.cc uni.cc
-TGZ = lda-yamada-apr24.tgz
+SRCS = README.txt Makefile main.cc rand.h param.h param.cc lda.h lda.cc corpus.h corpus.cc gibbs.h gibbs.cc multi.cc uni.cc ntst.cc
+TGZ = lda-2.0.tgz
 
 # output files
 OUTS = topics.txt doctopic.txt
 
 CFLAGS = -O3 -pthread 
+
+ECHO = /bin/echo
 
 all : $(MAIN)
 
@@ -32,6 +34,8 @@ gibbs.o : gibbs.cc gibbs.h corpus.h rand.h param.h
 multi.o : multi.cc gibbs.h corpus.h rand.h param.h
 
 uni.o : uni.cc gibbs.h corpus.h rand.h param.h
+
+ntst.o : ntst.cc gibbs.h corpus.h param.h
 
 $(MAIN) : $(OBJX)
 	g++ $(CFLAGS) -o $(MAIN) $(OBJX)

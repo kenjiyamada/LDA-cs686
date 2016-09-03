@@ -52,6 +52,12 @@ param::process_command(int argc, char** argv) {
   ppx_every=1;
   heldout_every=0;
 
+  fn_topic="topics.txt";
+  fn_doctopic="doctopic.txt";
+
+  fn_NULL = "";
+  fn_tpc_in=fn_dtc_in=fn_NULL;
+
   int i=1;
   while(*argv[i]=='-') {
     char *arg = argv[i];
@@ -62,6 +68,12 @@ param::process_command(int argc, char** argv) {
     else if (str_eq(arg,"-fd")) full_dump=true;
     else if (str_eq(arg,"-px")) ppx_every = s2i(argv[++i]);
     else if (str_eq(arg,"-ho")) heldout_every = s2i(argv[++i]);
+
+    else if (str_eq(arg,"-ot")) fn_topic = argv[++i];
+    else if (str_eq(arg,"-od")) fn_doctopic = argv[++i];
+    else if (str_eq(arg,"-it")) fn_tpc_in = argv[++i];
+    else if (str_eq(arg,"-id")) fn_dtc_in = argv[++i];
+
     else {
       cerr << "unrecognized option: " << arg << "\n";
       exit(1);
@@ -78,3 +90,7 @@ param::process_command(int argc, char** argv) {
        << ", ppx_every=" << ppx_every << ", heldout_every=" << heldout_every << "\n";
 }
 
+bool
+param::test_new_doc() {
+  return (fn_tpc_in != fn_NULL && fn_dtc_in == fn_NULL);
+}

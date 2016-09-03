@@ -108,6 +108,8 @@ local_sweep(void *arg){
   // put something in res
   //pf->res = dcnt;
   pf->res = xsum;
+
+  return (void *)0;
 }
 
 void
@@ -209,6 +211,7 @@ local_ppx(void *arg){
   lcp->trn_wcnt=trn_wcnt;
   lcp->tst_wcnt=tst_wcnt;
 
+  return (void *)0;
 }
 
 void

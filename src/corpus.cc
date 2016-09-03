@@ -63,8 +63,16 @@ document::set_words(vector<triplet> *vec, int ntopic){
 
 corpus::corpus(param *pm) {
   prm = pm;
+  num_topics = pm->num_topics;	// copy params
+
   rnd = new random_nr();
   rnd->set_seed(1234);
+}
+
+void 
+corpus::error_exit(string msg, int lineno, string line) {
+  cerr << "\nerror: " << msg << " (line " << lineno << ") [" << line << "]\n";
+  exit(1);
 }
 
 int 
@@ -165,7 +173,8 @@ corpus::show_stats(){
 }
 
 void
-corpus::init_zsmp(int ntopic){
+corpus::init_zsmp(){
+  int ntopic = num_topics;	// using copied class var
   long xsum = 0;
   for (int j=0; j<ndoc; j++) {
     document *dp=&(doc[j]);
@@ -179,4 +188,48 @@ corpus::init_zsmp(int ntopic){
     }
   }
   if (prm->verbose>0) cerr << "init_zsmp(): " << xsum << "\n";
+}
+
+double
+document::sample_zsmp(int i, float *zprb, int ntopic, float pr) {
+  // originally defined within gibbs::update_zsmp().
+  // note zprb has cumlative probs.
+
+  float cum = zprb[ntopic-1];
+  float ps = pr * cum;
+  int kx = 0;
+
+#define USE_BINARY_SEARCH 1
+#if USE_BINARY_SEARCH
+
+  int min=0;
+  int max=ntopic-1;
+  if (ps<zprb[min]) kx=min;
+  else if (ps>zprb[max]) kx=max;
+  else {
+    while(max-min>1) {
+      int mid=(min+max)/2;
+      float pm=zprb[mid];
+      if (pm>ps) max=mid;
+      else min=mid;
+    }
+    if (ps>zprb[max] || ps<zprb[min]) cerr << "unexpected error in binary search\n";
+    kx=max;
+  }
+
+#else
+  for (int k=0; k<ntopic; k++) { 
+    if (zprb[k]>ps) break;
+    kx++;
+  }
+#endif
+
+  // update zsmp
+  //dp->zsmp[i] = kx;
+  zsmp[i] = kx;
+
+  // return debug value
+  double zret = kx;
+  return zret;
+
 }

@@ -56,7 +56,7 @@ gibbs::iterate() {
 
   alloc_counts();		// both global and local counts
 
-  cp->init_zsmp(ntopic);	// init by random
+  cp->init_zsmp();	     // init by random
   init_n_wk();			// also init n_k (from zsmp), global only
   cerr << "start iteration:";
   for (int it=0; it<niter; it++) {
@@ -174,39 +174,7 @@ gibbs::update_zsmp(document *dp, int i, counts *lcp) {
   
   // sample topic
   float pr = lcp->rnd->get_rand();
-  float ps = pr * cum;
-  int kx = 0;
-
-#define USE_BINARY_SEARCH 1
-#if USE_BINARY_SEARCH
-
-  int min=0;
-  int max=ntopic-1;
-  if (ps<zprb[min]) kx=min;
-  else if (ps>zprb[max]) kx=max;
-  else {
-    while(max-min>1) {
-      int mid=(min+max)/2;
-      float pm=zprb[mid];
-      if (pm>ps) max=mid;
-      else min=mid;
-    }
-    if (ps>zprb[max] || ps<zprb[min]) cerr << "unexpected error in binary search\n";
-    kx=max;
-  }
-
-#else
-  for (int k=0; k<ntopic; k++) { 
-    if (zprb[k]>ps) break;
-    kx++;
-  }
-#endif
-
-  // update zsmp
-  dp->zsmp[i] = kx;
-
-  // return debug value
-  zret = kx;
+  zret = dp->sample_zsmp(i,lcp->zprb,ntopic,pr);
   return zret;
 }
 

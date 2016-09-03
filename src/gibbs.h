@@ -1,6 +1,8 @@
 #ifndef GIBBS_H
 #define GIBBS_H
 
+#include <thread>
+
 #include "param.h"
 #include "corpus.h"
 #include "rand.h"
@@ -91,6 +93,10 @@ class gibbs {
   void remove_counts(document*,int,counts*);
   void add_counts(document*,int,counts*);
   double update_zsmp(document*,int,counts*);
+
+  // for ntst
+  void test_new_doc();
+  void update_zsmp_ntst(document *dp, int i, counts *gcp);
 
  private:
   inline bool takeppx(int);

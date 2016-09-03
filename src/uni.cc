@@ -14,7 +14,7 @@ gibbs::iterate_uni(int niter, int ntopic, int nproc) {
   num_procs = nproc;
   alloc_counts();		// both global and local counts
 
-  cp->init_zsmp(ntopic);	// init by random
+  cp->init_zsmp();	     // init by random
   init_n_wk();			// also init n_k (from zsmp), global only
   int ndoc = cp->ndoc;
   for (int it=0; it<niter; it++) {
